@@ -28,6 +28,13 @@ describe("Plugin: oauth2 (schema)", function()
     assert.truthy(t.provision_key)
     assert.equal("hello", t.provision_key)
   end)
+  it("sets refresh_token_ttl to default value if not set", function()
+    local t = {enable_authorization_code = true, mandatory_scope = false}
+    local ok, errors = validate_entity(t, oauth2_schema)
+    assert.True(ok)
+    assert.is_nil(errors)
+    assert.equal(1209600, t.refresh_token_ttl)
+  end)
 
   describe("errors", function()
     it("requires at least one flow", function()
